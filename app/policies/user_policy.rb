@@ -1,4 +1,5 @@
-attr_reader :current_user, :user
+class UserPolicy
+  attr_reader :current_user, :user
 
   def initialize(current_user, user)
     @current_user = current_user
@@ -7,6 +8,11 @@ attr_reader :current_user, :user
 
   def show?
     user == current_user ||
-     !user.private? ||
-     user.followers.include?(current_user)
+      !user.private? ||
+      user.followers.include?(current_user)
   end
+
+  def feed?
+    true
+  end
+end
