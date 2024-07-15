@@ -1,5 +1,6 @@
 class PhotosController < ApplicationController
   before_action :set_photo, only: %i[ show edit update destroy ]
+  before_action :ensure_user_is_authorized, only: [:show]
 
   # GET /photos or /photos.json
   def index
@@ -75,5 +76,12 @@ class PhotosController < ApplicationController
   # Only allow a list of trusted parameters through.
   def photo_params
     params.require(:photo).permit(:image, :comments_count, :likes_count, :caption, :owner_id)
+  end
+
+  def ensure_user_is_authorized
+    if !PhotoPolicy.new(current_user, @photo).show?
+      raise Pundit::NotAuthorizedError, "not allowed"
+      # redirect_back fallback_location: root_url
+    end
   end
 end
