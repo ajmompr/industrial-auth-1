@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  after_action :verify_authorized
+
   protected
 
   def configure_permitted_parameters
