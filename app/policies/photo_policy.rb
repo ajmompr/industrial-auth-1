@@ -10,6 +10,28 @@ class PhotoPolicy < ApplicationPolicy
   #   of the owner, unless the owner is not private in which case anyone can
   #   see it
   def show?
-    authorize @photo
+    user == photo.owner ||
+      !photo.owner.private? ||
+      photo.owner.followers.include?(user)
+  end
+
+  def create?
+    user.present?
+  end
+
+  def new?
+    create?
+  end
+
+  def update?
+    user == photo.owner
+  end
+
+  def edit?
+    update?
+  end
+
+  def destroy?
+    edit?
   end
 end
