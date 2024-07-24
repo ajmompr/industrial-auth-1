@@ -1,4 +1,4 @@
-class FollowRequestPolicy < ApplicationPolicy
+class FollowRequestPolicy
   attr_reader :user, :follow_request
 
   def initialize(user, follow_request)
@@ -6,19 +6,15 @@ class FollowRequestPolicy < ApplicationPolicy
     @follow_request = follow_request
   end
 
-  def index?
-    true
-  end
-
   def create?
     true
   end
-
+  
   def update?
-    user == follow_request.sender || user == follow_request.recipient
+    user == follow_request.sender || follow_request.recipient
   end
 
   def destroy?
-    update?
+    user == follow_request.sender || follow_request.recipient
   end
 end
