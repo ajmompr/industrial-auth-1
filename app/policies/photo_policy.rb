@@ -15,12 +15,12 @@ class PhotoPolicy < ApplicationPolicy
       photo.owner.followers.include?(user)
   end
 
-  def create?
-    user.present?
+  def new?
+    true
   end
 
-  def new?
-    create?
+  def create?
+    new?
   end
 
   def update?
@@ -32,6 +32,6 @@ class PhotoPolicy < ApplicationPolicy
   end
 
   def destroy?
-    edit?
+    update?
   end
 end
